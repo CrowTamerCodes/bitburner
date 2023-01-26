@@ -19,7 +19,7 @@ run allfather on new servers
 
 export async function main(ns) {
 
-	ns.tail(ns.getScriptName());
+	//ns.tail(ns.getScriptName());
 	ns.clearLog();
 	ns.disableLog('ALL');
 
