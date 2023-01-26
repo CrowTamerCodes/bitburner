@@ -19,7 +19,7 @@ return home
 */
 export async function main(ns) {
 
-	ns.tail(ns.getScriptName());
+	//ns.tail(ns.getScriptName());
 	ns.clearLog();
 	ns.disableLog('ALL');
 	ns.wget("https://raw.githubusercontent.com/CrowTamerCodes/bitburner/main/fenrir.js", "fenrir.js", ns.getHostname());
