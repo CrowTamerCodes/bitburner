@@ -24,27 +24,21 @@ export async function main(ns) {
 	ns.disableLog('ALL');
 
 	//get latest files
-	ns.wget("https://raw.githubusercontent.com/CrowTamerCodes/bitburner/main/fenrir.js", "fenrir.js", ns.getHostname());
-	ns.wget("https://raw.githubusercontent.com/CrowTamerCodes/bitburner/main/huginn.js", "huginn.js", ns.getHostname());
-	ns.wget("https://raw.githubusercontent.com/CrowTamerCodes/bitburner/main/muninn.js", "muninn.js", ns.getHostname());
+	await ns.wget("https://raw.githubusercontent.com/CrowTamerCodes/bitburner/main/fenrir.js", "fenrir.js", ns.getHostname());
+	await ns.wget("https://raw.githubusercontent.com/CrowTamerCodes/bitburner/main/huginn.js", "huginn.js", ns.getHostname());
+	await ns.wget("https://raw.githubusercontent.com/CrowTamerCodes/bitburner/main/muninn.js", "muninn.js", ns.getHostname());
 
 	ns.exec('muninn.js', ns.getHostname());
+	ns.sleep(12000);
 	ns.exec('huginn.js', ns.getHostname());
+	ns.sleep(12000);
 
 	var servers = ns.scan();
 	//ns.print("Servers in Range: ");
 	for (var i = 0; i < servers.length; i++)
 	{
-		ns.wget("https://raw.githubusercontent.com/CrowTamerCodes/bitburner/main/allfather.js", "allfather.js", servers[i]);
+		await ns.wget("https://raw.githubusercontent.com/CrowTamerCodes/bitburner/main/allfather.js", "allfather.js", servers[i]);
 		ns.exec('allfather.js', servers[i]);
 	}
-
-
-
-
-
-	
-
-
 
 }
