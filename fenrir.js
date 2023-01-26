@@ -52,7 +52,7 @@ export async function main(ns) {
 	var currentSecurity = ns.getServerSecurityLevel(currentServer);
 	var securityThreshold = 6;
 
-	ns.tail(ns.getScriptName());
+	//ns.tail(ns.getScriptName());
 
 	while(true) {
 		currentMoney = ns.getServerMoneyAvailable(currentServer);
