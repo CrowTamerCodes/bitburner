@@ -43,8 +43,11 @@ export async function main(ns) {
 	//ns.print("Servers in Range: ");
 	for (var i = 0; i < servers.length; i++)
 	{
-		await ns.wget("https://raw.githubusercontent.com/CrowTamerCodes/bitburner/main/allfather.js", "allfather.js", servers[i]);
-		ns.exec('allfather.js', servers[i]);
+		if (servers[i] != 'home')
+		{
+			await ns.wget("https://raw.githubusercontent.com/CrowTamerCodes/bitburner/main/allfather.js", "allfather.js", servers[i]);
+			ns.exec('allfather.js', servers[i]);
+		}
 	}
 
 }
