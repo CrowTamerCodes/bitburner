@@ -29,9 +29,15 @@ export async function main(ns) {
 	await ns.wget("https://raw.githubusercontent.com/CrowTamerCodes/bitburner/main/muninn.js", "muninn.js", ns.getHostname());
 
 	ns.exec('muninn.js', ns.getHostname());
-	ns.sleep(12000);
+	for (var i=0; i<10; i++) {
+		ns.tprint(i + 1);
+		await ns.sleep(5000);
+	}
 	ns.exec('huginn.js', ns.getHostname());
-	ns.sleep(12000);
+	for (var i=0; i<10; i++) {
+		ns.tprint(i + 1);
+		await ns.sleep(5000);
+	}
 
 	var servers = ns.scan();
 	//ns.print("Servers in Range: ");
