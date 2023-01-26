@@ -30,12 +30,12 @@ export async function main(ns) {
 
 	ns.exec('muninn.js', ns.getHostname());
 	for (var i=0; i<3; i++) {
-		ns.tprint(i + 1);
+		//ns.tprint(i + 1);
 		await ns.sleep(5000);
 	}
 	ns.exec('huginn.js', ns.getHostname());
 	for (var i=0; i<3; i++) {
-		ns.tprint(i + 1);
+		//ns.tprint(i + 1);
 		await ns.sleep(5000);
 	}
 
