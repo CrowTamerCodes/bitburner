@@ -29,12 +29,12 @@ export async function main(ns) {
 	await ns.wget("https://raw.githubusercontent.com/CrowTamerCodes/bitburner/main/muninn.js", "muninn.js", ns.getHostname());
 
 	ns.exec('muninn.js', ns.getHostname());
-	for (var i=0; i<10; i++) {
+	for (var i=0; i<3; i++) {
 		ns.tprint(i + 1);
 		await ns.sleep(5000);
 	}
 	ns.exec('huginn.js', ns.getHostname());
-	for (var i=0; i<10; i++) {
+	for (var i=0; i<3; i++) {
 		ns.tprint(i + 1);
 		await ns.sleep(5000);
 	}
