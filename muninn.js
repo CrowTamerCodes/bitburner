@@ -46,7 +46,7 @@ export async function main(ns) {
 
 				ns.ftpcrack(servers_Lvl1[i]);
 				ns.brutessh(servers_Lvl1[i]);
-				ns.installBackdoor(servers_Lvl1[i]);
+				//ns.installBackdoor(servers_Lvl1[i]);
 				ns.nuke(servers_Lvl1[i]);
 			}
 		}
