@@ -22,7 +22,7 @@ export async function main(ns) {
 	//ns.tail(ns.getScriptName());
 	ns.clearLog();
 	ns.disableLog('ALL');
-	ns.wget("https://raw.githubusercontent.com/CrowTamerCodes/bitburner/main/fenrir.js", "fenrir.js", ns.getHostname());
+	//ns.wget("https://raw.githubusercontent.com/CrowTamerCodes/bitburner/main/fenrir.js", "fenrir.js", ns.getHostname());
 	
 
 	var servers = ns.scan();
@@ -36,6 +36,7 @@ export async function main(ns) {
 			//get latest versions
 			ns.wget("https://raw.githubusercontent.com/CrowTamerCodes/bitburner/main/fenrir.js", "fenrir.js", servers[i])
 			ns.exec('fenrir.js', servers[i]);
+			/*
 			if (ns.isRunning('fenrir.js', servers[i]))
 			{
 				ns.print(servers[i] + " | Activated");
@@ -50,7 +51,7 @@ export async function main(ns) {
 					ns.print(servers[i] + " | Error");
 				}
 			}
-			
+			*/
 		}
 		
 	}
