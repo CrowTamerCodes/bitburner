@@ -34,7 +34,7 @@ export async function main(ns) {
 			ns.print(servers[i] + " | Activated");
 		} else {
 			//get latest versions
-			ns.wget("https://raw.githubusercontent.com/CrowTamerCodes/bitburner/main/fenrir.js", "fenrir.js", servers[i])
+			await ns.wget("https://raw.githubusercontent.com/CrowTamerCodes/bitburner/main/fenrir.js", "fenrir.js", servers[i])
 			ns.exec('fenrir.js', servers[i]);
 			/*
 			if (ns.isRunning('fenrir.js', servers[i]))
