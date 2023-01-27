@@ -36,19 +36,25 @@ export async function main(ns) {
 
 			//ns.print(servers_Lvl1[i] + " | Untouched");
 			var serverPortsNeeded = ns.getServerNumPortsRequired(servers_Lvl1[i]);
-			var serverPortsOpen = ns.getServer(servers_Lvl1[i]).openPortCount;
+			//var serverPortsOpen = ns.getServer(servers_Lvl1[i]).openPortCount;
 
-			if(serverPortsOpen  >= serverPortsNeeded)
-			{
-				ns.nuke(servers_Lvl1[i]);
-
-			} else {
-
-				ns.ftpcrack(servers_Lvl1[i]);
-				ns.brutessh(servers_Lvl1[i]);
-				//ns.installBackdoor(servers_Lvl1[i]);
-				ns.nuke(servers_Lvl1[i]);
-			}
+			switch(ns.getServerNumPortsRequired(servers_Lvl1[i])) {
+				case 5:
+					// code block
+					break;
+				case 4:
+					// code block
+					break;
+				case 3:
+					// code block
+					break;
+				case 2:
+					ns.brutessh(servers_Lvl1[i]);
+				case 1:
+					ns.ftpcrack(servers_Lvl1[i]);
+				default:
+					ns.nuke(servers_Lvl1[i]);
+				}
 		}
 	}
 
