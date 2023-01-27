@@ -46,12 +46,11 @@ export async function main(ns) {
 					// code block
 					break;
 				case 3:
-					// code block
-					break;
+					ns.httpworm(servers_Lvl1[i]);
 				case 2:
-					ns.brutessh(servers_Lvl1[i]);
-				case 1:
 					ns.ftpcrack(servers_Lvl1[i]);
+				case 1:
+					ns.brutessh(servers_Lvl1[i]);
 				default:
 					ns.nuke(servers_Lvl1[i]);
 				}
