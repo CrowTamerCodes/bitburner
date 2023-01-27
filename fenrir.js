@@ -9,7 +9,7 @@
 		Bitburner V2.2.1 javascript
 Single server hack with weaken and grow mechanics
 */
-
+/*
 async function serverWeaken(ns, currentSecurity, minSecurity, currentServer){
 	
 	//var targetSecurityLvl = (ns.getServer(currentServer).baseDifficulty / 2);
@@ -44,7 +44,7 @@ async function growth(ns, minMoney, currentMoney, maxMoney, currentServer){
 	}
 	
 }
-
+*/
 async function jobSelect(ns, currentServer){
 
 	var timeToHack = ns.getHackTime();
@@ -85,6 +85,7 @@ export async function main(ns) {
 		//await serverWeaken(ns, currentSecurity, minSecurity, currentServer);
 		//await growth(ns, moneyThreshold, currentMoney, maxMoney, currentServer);
 		//await ns.hack(currentServer);
+		var currentServer = ns.getHostname();
 		await jobSelect(ns, currentServer);
 	}
 }
