@@ -20,11 +20,11 @@ async function jobSelect(ns, currentServer){
 	var minSec = ns.getServerMinSecurityLevel(currentServer);
 	//might need to change order and make weaken the default method.
 
-	if (currentMoney <= maxMoney * 0.75)
+	if (currentSec >= minSec *2)
 	{
 		await ns.grow(currentServer);
 
-	} else if (currentSec >= minSec *2) {
+	} else if (currentMoney <= maxMoney * 0.75) {
 
 		await ns.weaken(currentServer);
 
