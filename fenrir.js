@@ -22,11 +22,12 @@ async function jobSelect(ns, currentServer){
 
 	if (currentSec >= minSec *2)
 	{
-		await ns.grow(currentServer);
+		
+		await ns.weaken(currentServer);
 
 	} else if (currentMoney <= maxMoney * 0.75) {
 
-		await ns.weaken(currentServer);
+		await ns.grow(currentServer);
 
 	} else {
 
