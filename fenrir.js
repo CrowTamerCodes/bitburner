@@ -47,9 +47,9 @@ async function growth(ns, minMoney, currentMoney, maxMoney, currentServer){
 */
 async function jobSelect(ns, currentServer){
 
-	var timeToHack = ns.getHackTime();
-	var timeToWeaken = ns.getWeakenTime();
-	var timeToGrow = ns.getGrowTime();
+	var timeToHack = ns.getHackTime(currentServer);
+	var timeToWeaken = ns.getWeakenTime(currentServer);
+	var timeToGrow = ns.getGrowTime(currentServer);
 	//might need to change order and make weaken the default method.
 
 	if (timeToGrow <= timeToWeaken && timeToGrow <= timeToHack)
