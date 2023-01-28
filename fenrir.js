@@ -16,7 +16,7 @@ async function jobSelect(ns, currentServer){
 	var maxMoney = ns.getServerMaxMoney(currentServer);
 	var currentMoney = ns.getServerMoneyAvailable(currentServer);
 	//Security Vars
-	var currentSec = ns.getServerSecurityLevel(currentserver);
+	var currentSec = ns.getServerSecurityLevel(currentServer);
 	var minSec = ns.getServerMinSecurityLevel(currentServer);
 	//might need to change order and make weaken the default method.
 
