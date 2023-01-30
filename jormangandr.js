@@ -35,12 +35,12 @@ export async function main(ns) {
 
 		//Grow Target
 		ns.print("Growing " + currentGrowTarget + " with " + parseInt(ns.getServerMaxMoney(currentGrowTarget)) + " maximum funds.");
-		if (ns.getServerMoneyAvailable(currentGrowTarget) >= ns.getServerMaxMoney(currentGrowTarget) * .75) {
+		if (ns.getServerMoneyAvailable(currentGrowTarget) <= ns.getServerMaxMoney(currentGrowTarget) * .75) {
 			var growAmount = await ns.grow(currentGrowTarget);
 			ns.print("Increased funds by " + growAmount + " on target.");
 		}
 		//Weaken Target
-		if (ns.getServerSecurityLevel(currentWeakenTarget) >= ns.getServerMinSecurityLevel(currentWeakenTarget) * 1.25) {
+		if (ns.getServerSecurityLevel(currentWeakenTarget) >= ns.getServerMinSecurityLevel(currentWeakenTarget) * 2) {
 			ns.print("Weakening " + currentWeakenTarget + " with a security level of " + parseInt(ns.getServerSecurityLevel(currentWeakenTarget)));
 			var weakAmount = await ns.weaken(currentWeakenTarget);
 			ns.print("Weakend " + weakAmount + " security levels from target.");
