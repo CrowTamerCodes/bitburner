@@ -24,103 +24,105 @@ export async function main(ns) {
 	var currentScriptRam = ns.getScriptRam(ns.getScriptName());
 	var threadBudget = parseInt((currentMaxRam * .95) / currentScriptRam);
 	ns.print("Suggested thread count for server: " + threadBudget);
+	
 
-	while (true) {
+	//while (true) {
 
 		var targetList = await createTargetList(ns);
-		var currentGrowTarget = await findGrowTarget(ns, targetList);
-		var currentWeakenTarget = await findWeakenTarget(ns, targetList);
-		var currentHackTarget = await findHackTarget(ns, targetList);
-
-
-		//Grow Target
-		ns.print("Growing " + currentGrowTarget + " with " + parseInt(ns.getServerMaxMoney(currentGrowTarget)) + " maximum funds.");
-		if (ns.getServerMoneyAvailable(currentGrowTarget) <= ns.getServerMaxMoney(currentGrowTarget) * .75) {
-			var growAmount = await ns.grow(currentGrowTarget);
-			ns.print("Increased funds by " + growAmount + " on target.");
-		}
-		//Weaken Target
-		if (ns.getServerSecurityLevel(currentWeakenTarget) >= ns.getServerMinSecurityLevel(currentWeakenTarget) * 2) {
-			ns.print("Weakening " + currentWeakenTarget + " with a security level of " + parseInt(ns.getServerSecurityLevel(currentWeakenTarget)));
-			var weakAmount = await ns.weaken(currentWeakenTarget);
-			ns.print("Weakend " + weakAmount + " security levels from target.");
-		}
 		
-		//Hack Target
-		ns.print("Hacking " + currentHackTarget + " with " + parseInt(ns.getServerMoneyAvailable(currentHackTarget)) + " available funds.");
-		var hackedAmount = await ns.hack(currentHackTarget);
-		ns.print("Taken " + hackedAmount + " from target.");
+		var currentWeakenTarget = await findWeakenTarget(ns, targetList);
+		//var currentGrowTarget = await findGrowTarget(ns, targetList);
+		var currentHackTarget = await findHackTarget(ns, targetList);
+}
 
-		//ns.run();
-
+async function getTotalList(ns) {
+	var totalList = ns.scan();
+	for (var i = 0; i < totalList.length; i++) {
+		var connectedTargets = ns.scan(totalList[i]);
+		for (var t = 0; t < connectedTargets.length; t++) {
+			if ((totalList.indexOf(connectedTargets[t], 0) == -1)) {
+				totalList.push(connectedTargets[t]);
+			}
+		}
 	}
-
+	//ns.print("Total Servers:");
+	//ns.print(totalList);
+	return totalList;
 }
 
 async function createTargetList(ns) {
-
-	var targetList = ns.scan();
-	for (var i = 0; i < targetList.length; i++) {
-		if (ns.hasRootAccess(targetList[i])) {
-			//ns.print(targetList[i] + " | Infiltrated");
-			var connectedTargets = ns.scan(targetList[i]);
-			for (var t = 0; t < connectedTargets.length; t++) {
-				if ((targetList.indexOf(connectedTargets[t], 0) == -1) && ns.hasRootAccess(connectedTargets[t]) == true) {
-					targetList.push(connectedTargets[t]);
-				}
-			}
-		} else {
-			ns.print(targetList[i] + " | No Root")
+	var ignoreList = ns.getPurchasedServers();
+	ignoreList.push("home");
+	ignoreList.push("darkweb");
+	ns.print("Ignored Targets:");
+	ns.print(ignoreList);
+	var serverList = await getTotalList(ns);
+	var targetList = [];
+	
+	for (var t = 0; t < serverList.length; t++) {
+		if(ignoreList.indexOf(serverList[t]) == -1 && ns.hasRootAccess(serverList[t])) {
+			targetList.push(serverList[t]);
 		}
 	}
-	ns.print("Possible Targets:");
-	ns.print(targetList);
+	//ns.print("Possible Targets:");
+	//ns.print(targetList);
 	return targetList;
 }
 
 async function findGrowTarget(ns, servers) {
 	var reRunFlag = true;
-	var finalTarget = servers[0];
-	while (reRunFlag) {
-		for (var t = 0; t < servers.length; t++) {
-			if (serverMoneyRatio(ns, finalTarget) > serverMoneyRatio(ns, servers[t]) && serverMoneyRatio(ns, finalTarget) > 0) {
-				finalTarget = servers[t];
-			} else {
-				reRunFlag = false;
-			}
+	var currentGrowTarget = servers[0];
+	for (var t = 0; t < servers.length; t++) {
+		if (serverMoneyRatio(ns, currentGrowTarget) > serverMoneyRatio(ns, servers[t]) && serverMoneyRatio(ns, currentGrowTarget) > 0) {
+			currentGrowTarget = servers[t];
 		}
+	}
+	//Grow Target
+	ns.print("Growing " + currentGrowTarget + " with " + parseInt(ns.getServerMaxMoney(currentGrowTarget)) + " maximum funds.");
+	if (ns.getServerMoneyAvailable(currentGrowTarget) <= ns.getServerMaxMoney(currentGrowTarget) * 0.75) {
+		var growAmount = await ns.grow(currentGrowTarget);
+		ns.print("Increased funds by " + growAmount + " on target.");
 	}
 	return finalTarget;
 }
 
 async function findWeakenTarget(ns, servers) {
 	var reRunFlag = true;
-	var finalTarget = servers[0];
-	while (reRunFlag) {
-		for (var t = 0; t < servers.length; t++) {
-			if (serverSecurityRatio(ns, finalTarget) > serverSecurityRatio(ns, servers[t])) {
-				finalTarget = servers[t];
-			} else {
-				reRunFlag = false;
-			}
+	var finalWeakTarget = servers[0];
+	ns.print("Initial weaken target: " + finalWeakTarget + " | " + ns.getServerSecurityLevel(finalWeakTarget));
+	for (var t = 0; t < servers.length; t++) {
+		if (serverSecurityRatio(ns, finalWeakTarget) < serverSecurityRatio(ns, servers[t])) {
+			finalWeakTarget = servers[t];
+			ns.print("New weaken target: " + finalWeakTarget  + " | " + ns.getServerSecurityLevel(finalWeakTarget));
 		}
 	}
-	return finalTarget;
+	ns.print("Final weaken target: " + finalWeakTarget + " | " + ns.getServerSecurityLevel(finalWeakTarget) + "/" + ns.getServerMinSecurityLevel(finalWeakTarget));
+	//Weaken Target
+	if (ns.getServerSecurityLevel(finalWeakTarget) >= ns.getServerMinSecurityLevel(finalWeakTarget) * 1.5) {
+		ns.print("Weakening " + finalWeakTarget + " with a security level of " + parseInt(ns.getServerSecurityLevel(finalWeakTarget)));
+		var weakAmount = await ns.weaken(finalWeakTarget);
+		ns.print("Weakend " + weakAmount + " security levels from target.");
+	} else {
+		ns.print("No targets to weaken.");
+	}
+	return finalWeakTarget;
 }
 
 async function findHackTarget(ns, servers) {
 	var reRunFlag = true;
-	var finalTarget = servers[0];
-	while (reRunFlag) {
-		for (var t = 0; t < servers.length; t++) {
-			if (ns.getServerMoneyAvailable(finalTarget) < ns.getServerMoneyAvailable(servers[t]) && servers[t] != 'home') {
-				finalTarget = servers[t];
-			} else {
-				reRunFlag = false;
-			}
+	var finalHackTarget = servers[0];
+	for (var z = 0; z < servers.length; z++) {
+		if (ns.getServerMoneyAvailable(finalHackTarget) < ns.getServerMoneyAvailable(servers[z])) {
+			finalHackTarget = servers[z];
+		} else {
+			reRunFlag = false;
 		}
 	}
-	return finalTarget;
+	//Hack Target
+	ns.print("Hacking " + finalHackTarget + " with " + parseInt(ns.getServerMoneyAvailable(finalHackTarget)) + " available funds.");
+	var hackedAmount = await ns.hack(finalHackTarget);
+	ns.print("Taken " + hackedAmount + " from target.");
+	return finalHackTarget;
 }
 
 function serverMoneyRatio(ns, server) {
@@ -136,7 +138,7 @@ function serverMoneyRatio(ns, server) {
 
 function serverSecurityRatio(ns, server) {
 	if (ns.getServerMinSecurityLevel(server) != 0) {
-		var securityRatio = ns.getServerMinSecurityLevel(server) / ns.getServerSecurityLevel(server);
+		var securityRatio = ns.getServerSecurityLevel(server) - ns.getServerMinSecurityLevel(server);
 	} else {
 		securityRatio = 99999;
 	}
