@@ -26,13 +26,14 @@ export async function main(ns) {
 	ns.print("Suggested thread count for server: " + threadBudget);
 	
 
-	//while (true) {
+	while (true) {
 
 		var targetList = await createTargetList(ns);
 		
 		var currentWeakenTarget = await findWeakenTarget(ns, targetList);
 		//var currentGrowTarget = await findGrowTarget(ns, targetList);
 		var currentHackTarget = await findHackTarget(ns, targetList);
+	}
 }
 
 async function getTotalList(ns) {
