@@ -110,14 +110,17 @@ async function findWeakenTarget(ns, servers) {
 }
 
 async function findHackTarget(ns, servers) {
-	var reRunFlag = true;
 	var finalHackTarget = servers[0];
 	for (var z = 0; z < servers.length; z++) {
 		if (ns.getServerMoneyAvailable(finalHackTarget) < ns.getServerMoneyAvailable(servers[z])) {
 			finalHackTarget = servers[z];
-		} else {
-			reRunFlag = false;
 		}
+	}
+	//Grow Target
+	ns.print("Growing " + finalHackTarget + " with " + parseInt(ns.getServerMaxMoney(finalHackTarget)) + " maximum funds.");
+	if (ns.getServerMoneyAvailable(finalHackTarget) <= ns.getServerMaxMoney(finalHackTarget) * 0.75) {
+		var growAmount = await ns.grow(finalHackTarget);
+		ns.print("Increased funds by " + growAmount + " on target.");
 	}
 	//Hack Target
 	ns.print("Hacking " + finalHackTarget + " with " + parseInt(ns.getServerMoneyAvailable(finalHackTarget)) + " available funds.");
@@ -145,3 +148,4 @@ function serverSecurityRatio(ns, server) {
 	}
 	return securityRatio;
 }
+
